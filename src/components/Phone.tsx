@@ -29,7 +29,8 @@ export default function Phone({
   return (
     <div
       className={cn(
-        // UNDERSTAND THE Z-INDEX STRUCTURE
+        // create new stacking context that stacks the child elements relative to the parent, not the default document flow.
+        // without 'z-index: 50;' on the parent, the child elements will fall back to the default stacking context. Child elements with negative z-index values are placed behind other elements and disappear if they have no context and use the default stacking context.
         "pointer-events-none relative z-50 overflow-hidden",
         className,
       )}
