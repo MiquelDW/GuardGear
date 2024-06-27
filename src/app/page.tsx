@@ -1,3 +1,4 @@
+import { Icons } from "@/components/Icons";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Phone from "@/components/Phone";
 import { Check, Star } from "lucide-react";
@@ -7,7 +8,7 @@ export default function Home() {
     <div className="bg-slate-50">
       {/* Hero Section */}
       <section>
-        {/* Hero Container */}
+        {/* Hero Section Wrapper */}
         <MaxWidthWrapper className="pb-24 pt-10 sm:pb-32 lg:grid lg:grid-cols-3 lg:gap-x-0 lg:pb-52 lg:pt-24 xl:gap-x-8 xl:pt-32">
           {/* First Section Grid-Item wrapper (spans 2 cols) */}
           <div className="col-span-2 px-6 lg:px-0 lg:pt-4">
@@ -116,8 +117,104 @@ export default function Home() {
                 className="absolute -bottom-6 -left-6 w-20 select-none"
               />
 
-              {/* this component also creates the vertical space that allows the <img> elements to show */}
+              {/* this component also creates the vertical space (h-fit) that allows the absolutely positioned <img> elements to show */}
               <Phone className="w-64" imgSrc="/testimonials/1.jpg" />
+            </div>
+          </div>
+        </MaxWidthWrapper>
+      </section>
+
+      {/* Value Proposition Section */}
+      <section className="bg-slate-100 py-24">
+        {/* Wrapper */}
+        <MaxWidthWrapper className="flex flex-col items-center gap-16 sm:gap-32">
+          {/* First Section Flex-Item wrapper & Flex container */}
+          <div className="flex flex-col items-center gap-4 sm:gap-6 lg:flex-row">
+            <h2 className="order-1 mt-2 text-balance text-center text-5xl font-bold !leading-tight tracking-tight text-gray-900 md:text-6xl">
+              What our{" "}
+              <span className="relative px-2">
+                customers
+                <Icons.underline />
+              </span>{" "}
+              say
+            </h2>
+            <img src="/snake-2.png" className="order-0 w-24 lg:order-2" />
+          </div>
+
+          {/* Second Section Flex-Item wrapper & Grid container */}
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 px-4 lg:mx-0 lg:grid-cols-2">
+            {/* Grid-Item wrapper & Flex container (first user review) */}
+            <div className="flex flex-auto flex-col gap-4 lg:pr-8 xl:pr-20">
+              {/*  */}
+              <div className="mb-2 flex gap-0.5">
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+              </div>
+
+              {/*  */}
+              <div className="">
+                <p>
+                  "The case feels durable and I even got a compliment on the
+                  design. Had the case for two and a half months now and{" "}
+                  <span className="">the image is super clean</span>, on the
+                  case I had before, the image started fading into yellow-ish
+                  color after a couple weeks. Love it."
+                </p>
+              </div>
+
+              {/*  */}
+              <div className="">
+                <img src="/users/user-1.png" className="" alt="user" />
+                <div className="">
+                  <p className="font-semibold">Jonathan</p>
+                  <Check className="" />
+                  <p className="text-sm">Verified Purchase</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid-Item wrapper (second user review) */}
+          </div>
+        </MaxWidthWrapper>
+      </section>
+
+      {/* Final Section */}
+      <section>
+        {/* Wrapper */}
+        <MaxWidthWrapper className="py-24">
+          {/* Call To Action */}
+          <div className="mb-12 px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl sm:text-center">
+              <h2 className="order-1 mt-2 text-balance text-center text-5xl font-bold !leading-tight tracking-tight text-gray-900 md:text-6xl">
+                Upload your photo and get{" "}
+                <span className="relative bg-green-600 px-2 text-white">
+                  your own case
+                </span>{" "}
+                now
+              </h2>
+            </div>
+          </div>
+
+          {/* Phone Case Example */}
+          <div className="mx-auto max-w-6xl px-6 lg:px-8">
+            <div className="relative flex grid-cols-2 flex-col items-center gap-40 md:grid">
+              {/* this image gets taken out the grid's flow */}
+              <img
+                src="/arrow.png"
+                className="absolute left-1/2 top-[25rem] z-10 -translate-x-1/2 -translate-y-1/2 rotate-90 md:top-1/2 md:rotate-0"
+              />
+
+              <div className="relative h-80 w-full max-w-sm rounded-xl bg-gray-500/5 ring-inset ring-gray-900/10 md:h-full md:justify-self-end lg:rounded-2xl">
+                <img
+                  src="/horse.jpg"
+                  className="h-full w-full rounded-md bg-white object-cover shadow-2xl ring-1 ring-gray-900/10"
+                />
+              </div>
+
+              <Phone className="w-60" imgSrc="/horse_phone.jpg" />
             </div>
           </div>
         </MaxWidthWrapper>

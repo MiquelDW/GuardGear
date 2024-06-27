@@ -2,15 +2,20 @@
 import Link from "next/link";
 import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
+// button variants from the component library
 import { buttonVariants } from "./ui/button";
 import { ArrowRight } from "lucide-react";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const { getUser } = getKindeServerSession();
   // variable that determines if current user is logged in
-  const user = undefined;
+  // get the user from the current user session
+  const user = await getUser();
 
   // variable that determines if current logged in user is an admin
-  const isAdmin = false;
+  // check if current user's email (if 'user' is not null / logged in) is equal to the admin's email address saved inside the '.env' file
+  const isAdmin = user?.email === process.env.ADMIN_EMAIL;
 
   return (
     <nav
@@ -67,7 +72,7 @@ export default function Navbar() {
                   Login
                 </Link>
 
-                <div className="hidden h-8 w-px bg-zinc-200 sm:block" />
+                <div className="sm:bloc hidden h-8 w-px bg-zinc-200" />
 
                 <Link
                   href="/configure/upload"
