@@ -1,7 +1,12 @@
 import { Icons } from "@/components/Icons";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Phone from "@/components/Phone";
-import { Check, Star } from "lucide-react";
+import Phones from "@/components/Phones";
+// button variants from the component library
+import { buttonVariants } from "@/components/ui/button";
+import { ArrowRight, Check, Star } from "lucide-react";
+// navigate users to the specified routes without a full page reload
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -18,7 +23,7 @@ export default function Home() {
               <div className="absolute -top-20 left-0 hidden w-28 lg:block">
                 {/* gradient goes from bottom to top, start color begins with slate-50 and transitions to slate-50 at 50% opacity in the middle of the gradient */}
                 <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-slate-50 via-slate-50/50" />
-                <img src="/snake-1.png" className="w-full" />
+                <img src="/snake-1.png" className="w-full select-none" />
               </div>
 
               {/* Title */}
@@ -30,6 +35,7 @@ export default function Home() {
 
               {/* Description */}
               <p className="mt-8 max-w-prose text-balance text-center text-lg md:text-wrap lg:pr-10 lg:text-left">
+                {/* max-w-prose sets the maximum width of an element to 65 characters (or 65ch), which is considered ideal for readability in typography. It's a comfortable measure for reading */}
                 Capture your favorite memories with your own,{" "}
                 <span className="font-semibold">one-of-one</span> phone case.
                 CaseCobra allows you to protect your memories, not just your
@@ -109,15 +115,19 @@ export default function Home() {
           <div className="col-span-full mt-32 flex h-fit w-full justify-center px-8 sm:px-16 md:px-0 lg:col-span-1 lg:mx-0 lg:mt-20">
             <div className="relative md:max-w-xl">
               <img
+                // hide this image from screen readers
+                aria-hidden="true"
                 src="/your-image.png"
                 className="absolute -top-20 left-56 hidden w-40 select-none sm:block lg:hidden lg:w-52 xl:block"
               />
               <img
+                // hide this image from screen readers
+                aria-hidden="true"
                 src="/line.png"
                 className="absolute -bottom-6 -left-6 w-20 select-none"
               />
 
-              {/* this component also creates the vertical space (h-fit) that allows the absolutely positioned <img> elements to show */}
+              {/* this component also creates the space that allows the absolutely positioned <img> elements to show */}
               <Phone className="w-64" imgSrc="/testimonials/1.jpg" />
             </div>
           </div>
@@ -134,18 +144,22 @@ export default function Home() {
               What our{" "}
               <span className="relative px-2">
                 customers
-                <Icons.underline />
+                {/* create SVG icon (JSX element) */}
+                <Icons.underline className="pointer-events-none absolute inset-x-0 -bottom-6 hidden text-green-500 sm:block" />
               </span>{" "}
               say
             </h2>
-            <img src="/snake-2.png" className="order-0 w-24 lg:order-2" />
+            <img
+              src="/snake-2.png"
+              className="order-0 w-24 select-none lg:order-2"
+            />
           </div>
 
           {/* Second Section Flex-Item wrapper & Grid container */}
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 px-4 lg:mx-0 lg:grid-cols-2">
-            {/* Grid-Item wrapper & Flex container (first user review) */}
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 px-4 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+            {/* First Grid-Item wrapper & Flex container (first user review) */}
             <div className="flex flex-auto flex-col gap-4 lg:pr-8 xl:pr-20">
-              {/*  */}
+              {/* Stars / Rating */}
               <div className="mb-2 flex gap-0.5">
                 <Star className="h-5 w-5 fill-green-600 text-green-600" />
                 <Star className="h-5 w-5 fill-green-600 text-green-600" />
@@ -154,34 +168,87 @@ export default function Home() {
                 <Star className="h-5 w-5 fill-green-600 text-green-600" />
               </div>
 
-              {/*  */}
-              <div className="">
+              {/* Review Text */}
+              <div className="text-lg leading-8">
                 <p>
                   "The case feels durable and I even got a compliment on the
                   design. Had the case for two and a half months now and{" "}
-                  <span className="">the image is super clean</span>, on the
-                  case I had before, the image started fading into yellow-ish
-                  color after a couple weeks. Love it."
+                  <span className="bg-slate-800 p-0.5 text-white">
+                    the image is super clean
+                  </span>
+                  , on the case I had before, the image started fading into
+                  yellow-ish color after a couple weeks. Love it."
                 </p>
               </div>
 
-              {/*  */}
-              <div className="">
-                <img src="/users/user-1.png" className="" alt="user" />
-                <div className="">
+              {/* Reviewer */}
+              <div className="mt-2 flex gap-4">
+                <img
+                  src="/users/user-1.png"
+                  className="h-12 w-12 rounded-full object-cover"
+                  alt="user"
+                />
+                <div className="flex flex-col">
                   <p className="font-semibold">Jonathan</p>
-                  <Check className="" />
-                  <p className="text-sm">Verified Purchase</p>
+                  <div className="flex items-center gap-1.5 text-zinc-600">
+                    <Check className="h-4 w-4 stroke-[3px] text-green-600" />
+                    <p className="text-sm">Verified Purchase</p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Grid-Item wrapper (second user review) */}
+            {/* Second Grid-Item wrapper (second user review) */}
+            <div className="flex flex-auto flex-col gap-4 lg:pr-8 xl:pr-20">
+              {/* Stars / Rating */}
+              <div className="mb-2 flex gap-0.5">
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+                <Star className="h-5 w-5 fill-green-600 text-green-600" />
+              </div>
+
+              {/* Review Text */}
+              <div className="text-lg leading-8">
+                <p>
+                  "I usually keep my phone together with my keys in my pocket
+                  and that led to some pretty heavy scratchmarks on all of my
+                  last phone cases. This one, besides a barely noticeable
+                  scratch on the corner,{" "}
+                  <span className="bg-slate-800 p-0.5 text-white">
+                    looks brand new after about half a year
+                  </span>
+                  . I dig it."
+                </p>
+              </div>
+
+              {/* Reviewer */}
+              <div className="mt-2 flex gap-4">
+                <img
+                  src="/users/user-4.jpg"
+                  className="h-12 w-12 rounded-full object-cover"
+                  alt="user"
+                />
+                <div className="flex flex-col">
+                  <p className="font-semibold">Miquel</p>
+                  <div className="flex items-center gap-1.5 text-zinc-600">
+                    <Check className="h-4 w-4 stroke-[3px] text-green-600" />
+                    <p className="text-sm">Verified Purchase</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </MaxWidthWrapper>
+
+        {/* entire phone grid animation */}
+        <div className="pt-16">
+          <Phones />
+        </div>
       </section>
 
-      {/* Final Section */}
+      {/* Bottom Section */}
       <section>
         {/* Wrapper */}
         <MaxWidthWrapper className="py-24">
@@ -200,8 +267,9 @@ export default function Home() {
 
           {/* Phone Case Example */}
           <div className="mx-auto max-w-6xl px-6 lg:px-8">
+            {/* Flex & Grid container */}
             <div className="relative flex grid-cols-2 flex-col items-center gap-40 md:grid">
-              {/* this image gets taken out the grid's flow */}
+              {/* this image gets taken out the grid's & flex's flow */}
               <img
                 src="/arrow.png"
                 className="absolute left-1/2 top-[25rem] z-10 -translate-x-1/2 -translate-y-1/2 rotate-90 md:top-1/2 md:rotate-0"
@@ -217,6 +285,38 @@ export default function Home() {
               <Phone className="w-60" imgSrc="/horse_phone.jpg" />
             </div>
           </div>
+
+          {/* Highlights + Button to create phone case */}
+          <ul className="mx-auto mt-12 w-fit max-w-prose space-y-2 sm:text-lg">
+            <li className="w-fit">
+              <Check className="mr-1.5 inline h-5 w-5 text-green-600" />
+              High-quality silicone material
+            </li>
+            <li className="w-fit">
+              <Check className="mr-1.5 inline h-5 w-5 text-green-600" />
+              Scratch- and fingerprint resistant coating
+            </li>
+            <li className="w-fit">
+              <Check className="mr-1.5 inline h-5 w-5 text-green-600" />
+              Wireless charging compatible
+            </li>
+            <li className="w-fit">
+              <Check className="mr-1.5 inline h-5 w-5 text-green-600" />
+              Print warranty
+            </li>
+
+            <div className="flex justify-center">
+              <Link
+                href="/configure/payload"
+                className={buttonVariants({
+                  size: "lg",
+                  className: "mx-auto mt-8",
+                })}
+              >
+                Create your case now <ArrowRight className="ml-1.5 h-4 w-4" />
+              </Link>
+            </div>
+          </ul>
         </MaxWidthWrapper>
       </section>
     </div>
