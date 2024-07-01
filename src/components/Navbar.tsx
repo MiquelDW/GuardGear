@@ -18,6 +18,7 @@ export default async function Navbar() {
   const isAdmin = user?.email === process.env.ADMIN_EMAIL;
 
   return (
+    // Navigation Section
     <nav
       className="sticky inset-x-0 top-0 z-[100] h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all"
       aria-label="Primary site navigation"
@@ -33,6 +34,7 @@ export default async function Navbar() {
               <>
                 <Link
                   href="/api/auth/logout"
+                  // apply tailwind classes from the button componnent
                   className={buttonVariants({ size: "sm", variant: "ghost" })}
                 >
                   Sign out

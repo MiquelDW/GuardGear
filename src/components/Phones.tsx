@@ -13,7 +13,7 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 // framer-motion is one of the most popular React animation libraries
 // 'useInView' is a hook from framer-motion to check if something in the viewport
 import { useInView } from "framer-motion";
-// use 'cn' helper function to merge the default classNames with the given classNames send as a prop
+// use 'cn' helper function to merge default classNames with other classNames
 import { cn } from "@/lib/utils";
 import Phone from "./Phone";
 
@@ -107,7 +107,7 @@ function PhoneColumn({
   msPerPixel?: number;
 }) {
   // ref object to directly access and interact with the container <div> element to read or modify its properties and to call its methods
-  // pass in a generic to tell TS what the type of the ref object will be
+  // pass in a generic to tell TS what type the ref object will be
   const columnRef = useRef<HTMLDivElement | null>(null);
 
   // state variable that keeps track of the current column's height

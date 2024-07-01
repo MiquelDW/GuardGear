@@ -61,13 +61,14 @@ export default function CallToAction() {
             Wireless charging compatible
           </li>
           <li className="w-fit">
-            <Check className="mr-1.5 inline h-5 w-5 text-green-600" />
-            Print warranty
+            <Check className="mr-1.5 inline h-5 w-5 text-green-600" />5 year
+            print warranty
           </li>
 
           <div className="flex justify-center">
             <Link
               href="/configure/payload"
+              // apply tailwind classes from the button componnent
               className={buttonVariants({
                 size: "lg",
                 className: "mx-auto mt-8",
