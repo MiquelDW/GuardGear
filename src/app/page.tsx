@@ -1,6 +1,6 @@
-import CallToAction from "@/components/LandingPage/CallToAction";
-import HeroSection from "@/components/LandingPage/HeroSection";
-import ValueProposition from "@/components/LandingPage/ValueProposition";
+import CallToAction from "./_LandingPage/CallToAction";
+import HeroSection from "./_LandingPage/HeroSection";
+import ValueProposition from "./_LandingPage/ValueProposition";
 
 export default function Home() {
   return (

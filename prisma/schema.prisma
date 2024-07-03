@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// basic idea: here you define your data models which you can use across your app to read and write data in your database 
+
+// specify how Prisma should generate the client for your project
+generator client {
+  provider = "prisma-client-js"
+}
+
+// connect to your database
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// data models
+model Configuration {
+  // each object gets an id from the 'cuid' function
+  id              String  @id @default(cuid())
+  width           Int
+  height          Int
+  imageUrl        String
+  // optional field (won't be initialized in step 1, only until step 2)
+  croppedImageUrl String?
+}

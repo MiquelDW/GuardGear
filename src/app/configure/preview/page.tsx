@@ -1,3 +1,3 @@
-export default function Page() {
+export default function Preview() {
   return <div>Preview</div>;
 }

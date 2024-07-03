@@ -1,8 +1,9 @@
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import Phone from "@/components/Phone";
+import { buttonVariants } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
-import MaxWidthWrapper from "../MaxWidthWrapper";
-import Phone from "../Phone";
+
 // button variants from the component library
-import { buttonVariants } from "../ui/button";
 // navigate users to the specified routes without a full page reload
 import Link from "next/link";
 
@@ -67,7 +68,7 @@ export default function CallToAction() {
 
           <div className="flex justify-center">
             <Link
-              href="/configure/payload"
+              href="/configure/upload"
               // apply tailwind classes from the button componnent
               className={buttonVariants({
                 size: "lg",

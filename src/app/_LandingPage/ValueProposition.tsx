@@ -1,8 +1,8 @@
 import React from "react";
-import MaxWidthWrapper from "../MaxWidthWrapper";
-import { Icons } from "../Icons";
 import { Check, Star } from "lucide-react";
-import Phones from "../Phones";
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import { Icons } from "@/components/Icons";
+import Phones from "@/components/Phones";
 
 export default function ValueProposition() {
   return (

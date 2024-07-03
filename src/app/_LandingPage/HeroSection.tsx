@@ -1,7 +1,8 @@
 import React from "react";
-import MaxWidthWrapper from "../MaxWidthWrapper";
+
 import { Check, Star } from "lucide-react";
-import Phone from "../Phone";
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import Phone from "@/components/Phone";
 
 export default function HeroSection() {
   return (

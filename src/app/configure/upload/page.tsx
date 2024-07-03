@@ -1,35 +1,79 @@
-// NAME OF PROJECT: CaseHaven
-
 // indicate that this file or module should be treated as a Client Component
 "use client";
 
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/components/ui/use-toast";
+// hook that allows you to upload images to a given endpoint
+import { useUploadThing } from "@/lib/uploadthing";
 // use 'cn' helper function to merge default classNames with other classNames
 import { cn } from "@/lib/utils";
 import { Image, Loader2, MousePointerSquareDashed } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 // import 'DropZone' component to create a drag'n'drop zone for files
 // also import type 'FileRejection' from the library
 import DropZone, { type FileRejection } from "react-dropzone";
 
-export default function Page() {
+export default function Upload() {
+  // the useToast hook returns a toast function that you can use to display the 'Toaster' component
+  const { toast } = useToast();
+
+  // instantiate 'router' object with the 'useRouter' hook
+  const router = useRouter();
+
   // state that keeps track of if the user drags a file over the upload section
   // pass in a generic to tell TS what type the state variable will be
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
 
   // state variable that keeps track of the current upload progress
-  const [uploadProgress, setUploadProgrss] = useState<number>(0);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
 
   // function that handles unvalid file drops
-  const onDropRejected = () => {};
+  // the dropped and rejected files are automatically provided by react-dropzone
+  const onDropRejected = (rejectedFiles: FileRejection[]) => {
+    // destructure rejected file obj from the given array 'rejectedFiles'
+    const [file] = rejectedFiles;
+
+    // user is no longer dragging an img over the dropzone if img was rejected
+    setIsDragOver(false);
+
+    // display the 'Toaster' component with an error message to the user
+    toast({
+      title: `${file.file.type} type is not supported`,
+      description: "Please choose a PNG, JPG, or JPEG image instead",
+      variant: "destructive",
+    });
+  };
 
   // function that handles valid file drops
-  const onDropAccepted = () => {};
+  // the dropped and accepted files are automatically provided by react-dropzone
+  const onDropAccepted = (acceptedFiles: File[]) => {
+    // upload the dropped file via the end point / route "imageUploader"
+    startUpload(acceptedFiles, { configId: undefined });
 
-  //
-  const isUploading = false;
+    // user is no longer dragging an img over the dropzone if img was accepted
+    setIsDragOver(false);
+  };
 
-  // variable 'isPending' keeps track of wether a transition has finished or not
+  // variable 'isUploading' keeps track of whether an upload has finished or not
+  const { isUploading, startUpload } = useUploadThing("imageUploader", {
+    // function that activates when the dropped image by the user has uploaded
+    onClientUploadComplete: ([data]) => {
+      // retrieve 'configId' from destructured 'data' that you get back from the server / 'uploadthing' after the image has been uploaded and added to DB
+      const configId = data.serverData.configId;
+      // navigate user to the next step and show loading state while the user is being redirected
+      startTransition(() => {
+        router.push(`/configure/design?id=${configId}`);
+      });
+    },
+    // function that keeps track of the current image upload progress
+    onUploadProgress(p) {
+      // update state var 'uploadProgress' with current retrieved upload progress
+      setUploadProgress(p);
+    },
+  });
+
+  // variable 'isPending' keeps track of whether a transition has finished or not
   // when navigating the user, you can show loading states while a page's content is rendering with the 'startTransition' function
   const [isPending, startTransition] = useTransition();
 
