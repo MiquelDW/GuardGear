@@ -38,6 +38,8 @@ export default function Phone({
       {...props}
     >
       {/* phone case (z-50: shows on top of given phonecase-img) */}
+      {/* NOTE: z-index only works only on elements that have a positioning other than the default 'static' (relative, absolute, sticky etc) */}
+      {/* NOTE: positioned elements (with relative, absolute, fixed, or sticky) with a positive and negative z-index value are always placed above elements with default position: 'static' */}
       <img
         src={
           dark

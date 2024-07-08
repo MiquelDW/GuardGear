@@ -46,7 +46,7 @@ export const ourFileRouter = {
           },
         });
 
-        // return the 'configId' from the newly added 'configuration' object
+        // return the 'config ID' from the newly added 'configuration' object
         // this will be returned to 'onClientUploadComplete'
         return { configId: configuration.id };
       } else {
@@ -57,13 +57,13 @@ export const ourFileRouter = {
             id: configId,
           },
           data: {
-            // update the value of the field 'croppedImageUrl' with the url from the uploaded cropped image
+            // update the value of the field 'croppedImageUrl' with the url from the given uploaded cropped image
             croppedImageUrl: file.url,
           },
         });
 
-        // return the 'configId' from the updated 'configuration' object
-        return { configId: updatedConfiguration };
+        // return the 'config ID' from the updated 'configuration' object
+        return { configId: updatedConfiguration.id };
       }
     }),
 } satisfies FileRouter;
