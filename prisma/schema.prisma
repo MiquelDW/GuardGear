@@ -1,26 +1,65 @@
-// This is your Prisma schema file,
+// This is your Prisma schema file:
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// basic idea: here you define your data models which you can use across your app to read and write data in your database 
+// basic idea: here you define your local prisma data models which you can use across your app to read and write data on your (remote) database
+// prisma synchronizes your defined local data models with your remote database. Anytime you change anything that affects the data models, run the command "npx prisma db push" to synchronize your local data models with your remote database.
 
 // specify how Prisma should generate the client for your project
 generator client {
   provider = "prisma-client-js"
 }
 
-// connect to your database
+// specify the details of the database that Prisma ORM should connect to, to synchronize your local data models with- and perform actions on the (remote) DB
 datasource db {
   provider = "postgresql"
+  // PostgreSQL remote database (from Neon) 
   url      = env("DATABASE_URL")
 }
 
-// data models
+// enum type is a list of valid entries
+enum OrderStatus {
+  fulfilled
+  shipped
+  awaiting_shipment
+}
+
+enum PhoneModel {
+  iphonex
+  iphone11
+  iphone12
+  iphone13
+  iphone14
+  iphone15
+}
+
+enum CaseMaterial {
+  silicone
+  polycarbonate
+}
+
+enum CaseFinish {
+  smooth
+  textured
+}
+
+enum CaseColor {
+  black
+  blue
+  rose
+}
+
+// data models (tables)
 model Configuration {
   // each object gets an id from the 'cuid' function
-  id              String  @id @default(cuid())
+  id              String        @id @default(cuid())
   width           Int
   height          Int
   imageUrl        String
   // optional field (won't be initialized in step 1, only until step 2)
   croppedImageUrl String?
+  // only the values from the enum types are allowed in these fields
+  model           PhoneModel?
+  material        CaseMaterial?
+  finish          CaseFinish?
+  color           CaseColor?
 }

@@ -21,7 +21,7 @@ export const ourFileRouter = {
       // destructure the given 'input' from the middleware inside obj 'metadata'
       const { configId } = metadata.input;
 
-      // fetch the uploaded image
+      // fetch the uploaded image from 'uploadThings'
       const res = await fetch(file.url);
       // convert response data from 'res' into a low-level representation of binary data (arrayBuffer)
       // use this when working with image, audio, or other non-textual data. It allows you to work with raw binary data in a buffer format
@@ -53,7 +53,7 @@ export const ourFileRouter = {
         // if 'configId' already exists and is passed to the route, that means you want to update an existing 'configuration' object in the DB (step 2)
         const updatedConfiguration = await db.configuration.update({
           where: {
-            // change the field where its 'id' matches the given 'configId'
+            // update the record where its 'id' matches the given 'configId'
             id: configId,
           },
           data: {

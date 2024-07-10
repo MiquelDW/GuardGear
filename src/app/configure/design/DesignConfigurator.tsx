@@ -17,7 +17,7 @@ import {
   Label as LabelHeadless,
   Description,
 } from "@headlessui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   COLORS,
   FINISHES,
@@ -33,6 +33,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { BASE_PRICE } from "@/config/products";
+import { useUploadThing } from "@/lib/uploadthing";
+import { useToast } from "@/components/ui/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { SaveConfigArgs, saveConfig as _saveConfig } from "./action";
+// define a router obj to programmatically redirect users to the given route
+import { useRouter } from "next/navigation";
 
 // predefine object structure for the given 'props' object
 interface DesignConfiguratorProps {
@@ -46,6 +52,28 @@ export default function DesignConfigurator({
   imageUrl,
   imageDimensions,
 }: DesignConfiguratorProps) {
+  const router = useRouter();
+  // the useToast hook returns a toast function that you can use to display the 'Toaster' component
+  const { toast } = useToast();
+
+  const { mutate: saveConfig } = useMutation({
+    mutationKey: ["save-config"],
+    mutationFn: async (args: SaveConfigArgs) => {
+      await Promise.all([saveConfiguration(), _saveConfig(args)]);
+    },
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description: "There was an error on our end. Please try again.",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      // navigate user to the next step
+      router.push(`/configure/preview?id=${configId}`);
+    },
+  });
+
   // usestate hook to keep track of the currently selected options
   const [options, setOptions] = useState<{
     // define type of each object prop (typeof 'array' indexed with a number)
@@ -60,15 +88,135 @@ export default function DesignConfigurator({
     finish: FINISHES.options[0],
   });
 
+  // state variable that keeps track of the dimensions of cropped image
+  const [renderedDimension, setRenderedDimension] = useState({
+    // start out with these dimensions
+    width: imageDimensions.width / 4,
+    height: imageDimensions.height / 4,
+  });
+
+  // state variable that keeps track of the position of cropped image
+  const [renderedPosition, setRenderedPosition] = useState({
+    // start out with these positions
+    x: 150,
+    y: 205,
+  });
+
+  // ref objects that point to grid-item container & phoneCase container <div> elements
+  const containerRef = useRef<HTMLDivElement>(null);
+  const phoneCaseRef = useRef<HTMLDivElement>(null);
+
+  // upload the cropped img file via the end point / route "imageUploader"
+  const { startUpload } = useUploadThing("imageUploader");
+
+  // function that uploads the cropped image to 'uploadThings' and updates DB
+  async function saveConfiguration() {
+    try {
+      // retrieve grid-item container coordinates
+      const {
+        // destructured props renamed to 'containerLeft' & 'containerTop'
+        // 'left' and 'top' is the distance from the edge of the page to the container in px (offset)
+        left: containerLeft,
+        top: containerTop,
+      } = containerRef.current!.getBoundingClientRect();
+
+      // retrieve phone case container coordinates and dimensions
+      const {
+        left: caseLeft,
+        top: caseTop,
+        width,
+        height,
+      } = phoneCaseRef.current!.getBoundingClientRect();
+
+      // calculate the left and top offset of the phonecase from the grid-item <div> container
+      // C:\Users\mique\OneDrive\Afbeeldingen\Schermopnamen\Calc_Offset.png
+      const leftOffset = caseLeft - containerLeft;
+      const topOffset = caseTop - containerTop;
+
+      // calc the actual x & y positions of cropped image by removing the calced offsets from the current x & y positions (also offsets) of the dragged and resized (cropped) image
+      // so, you get the position of the (cropped) image relative to the phone case
+      // C:\Users\mique\OneDrive\Afbeeldingen\Schermopnamen\calc_cropped_positition_improved.png
+      const actualX = renderedPosition.x - leftOffset;
+      const actualY = renderedPosition.y - topOffset;
+
+      // create a canvas element on which to draw the cropped image
+      const canvas = document.createElement("canvas");
+      // canvas has the same dimensions as the phone case
+      canvas.width = width;
+      canvas.height = height;
+      // context object allows you to modify the created canvas element
+      const context = canvas.getContext("2d");
+
+      // instantiate image object that holds the given uploaded image ('imageUrl')
+      const userImage = new Image();
+      // prevent cross-origin errors when retrieving image from the given src ('imageUrl')
+      userImage.crossOrigin = "anonymous";
+      userImage.src = imageUrl;
+      // wait until the given uploaded image has successfully been loaded in
+      await new Promise((resolve) => (userImage.onload = resolve));
+
+      // with the information about the position and dimensions of the cropped image on the phone case, you can draw the cropped image on the canvas
+      context?.drawImage(
+        userImage,
+        actualX,
+        actualY,
+        renderedDimension.width,
+        renderedDimension.height,
+      );
+
+      // convert canvas HTML into base64-encoded string representing the image (url)
+      const base64 = canvas.toDataURL();
+      // retrieve the image data part of the base64 string url
+      const base64Data = base64.split(",")[1];
+
+      // convert base64 string url into blob object (Binary Large Object) that represents the HTML canvas element (phone case with cropped image)
+      const blob = base64ToBlob(base64Data, "image/png");
+      // convert blob object into an file element that you can upload
+      const file = new File([blob], "filename.png", { type: "image/png" });
+
+      // upload canvas (phone case with cropped image) file via the specified route, and also pass in the given 'configId'
+      // update the record in the DB where its 'id' matches the given 'configId'
+      await startUpload([file], { configId });
+    } catch (err) {
+      // display the 'Toaster' component with an error message to the user
+      toast({
+        title: "Something went wrong",
+        description:
+          "There was a problem saving your config, please try again.",
+        variant: "destructive",
+      });
+    }
+  }
+
+  // function that converts base64 string url into an image
+  function base64ToBlob(base64: string, mimeType: string) {
+    // convert base64 string url into individual bytes
+    const byteCharacters = atob(base64);
+    // convert bytes into numbers and put them inside an array (of length 3065)
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    // convert byte numbers into Uint8Array
+    const byteArray = new Uint8Array(byteNumbers);
+    // convert Uint8Array into a blob element and pass in the given 'mimeType''
+    return new Blob([byteArray], { type: mimeType });
+  }
+
   return (
     <div className="relative mb-20 mt-20 grid grid-cols-1 pb-20 lg:grid-cols-3">
       {/* Grid-Item wrapper - Design Phone Case (Left Section) */}
-      <div className="relative col-span-2 flex h-[37.5rem] w-full max-w-4xl items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+      <div
+        ref={containerRef}
+        className="relative col-span-2 flex h-[37.5rem] w-full max-w-4xl items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      >
         {/* Wrapper for the phone case */}
         {/* 896/1831 is the aspect ratio of the phone where you place the img */}
         <div className="pointer-events-none relative aspect-[896/1831] w-60 bg-opacity-50">
           {/* in order for the phone case to maintain its aspect ratio, use 'AspectRatio' Component from UI lib */}
           <AspectRatio
+            ref={phoneCaseRef}
             ratio={896 / 1831}
             className="pointer-events-none relative z-50 aspect-[896/1831] w-full"
           >
@@ -112,6 +260,26 @@ export default function DesignConfigurator({
             bottomLeft: <HandleComponent />,
             topRight: <HandleComponent />,
             topLeft: <HandleComponent />,
+          }}
+          // execute callback function when resizing of the component stops
+          onResizeStop={(_, __, ref, ___, { x, y }) => {
+            // update dimensions inside the state var with the current dimensions of cropped image
+            setRenderedDimension({
+              // slice 'px' away from 'height' and 'width' values
+              height: parseInt(ref.style.height.slice(0, -2)),
+              width: parseInt(ref.style.width.slice(0, -2)),
+            });
+
+            // update x & y positions inside the state var with the current x & y positions of cropped image
+            setRenderedPosition({ x, y });
+          }}
+          // execute callback function when dragging of the component stops
+          onDragStop={(_, data) => {
+            // destructure current x & y positions of cropped image
+            const { x, y } = data;
+
+            // update x & y positions inside the state var with the current x & y positions of cropped image
+            setRenderedPosition({ x, y });
           }}
           className="absolute z-20 border-[3px] border-primary"
         >
@@ -352,7 +520,16 @@ export default function DesignConfigurator({
               {/* continue button to take user to the next step */}
               <Button
                 disabled={false}
-                onClick={() => console.log("clicked")}
+                //
+                onClick={() =>
+                  saveConfig({
+                    configId,
+                    color: options.color.value,
+                    model: options.model.value,
+                    material: options.material.value,
+                    finish: options.finish.value,
+                  })
+                }
                 size="sm"
                 className="w-full"
               >
