@@ -35,7 +35,10 @@ import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { BASE_PRICE } from "@/config/products";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useToast } from "@/components/ui/use-toast";
+// useMutation hook is typically used to create/update/delete data or perform server side-effects
+// with this hook, you're able to perform server-side operations and seperate it from the client, while also being able to perform client side actions based on the result of those operations (such as redirecting the user if mutation function has successfully completed), among other main benefits of this hook
 import { useMutation } from "@tanstack/react-query";
+// rename 'saveConfig' to '_saveConfig' to prevent naming conflict
 import { SaveConfigArgs, saveConfig as _saveConfig } from "./action";
 // define a router obj to programmatically redirect users to the given route
 import { useRouter } from "next/navigation";
@@ -56,11 +59,16 @@ export default function DesignConfigurator({
   // the useToast hook returns a toast function that you can use to display the 'Toaster' component
   const { toast } = useToast();
 
+  // destructure defined mutation function (renamed to 'saveConfig')
   const { mutate: saveConfig } = useMutation({
+    // useful for caching and invalidation
     mutationKey: ["save-config"],
+    // define mutation function
     mutationFn: async (args: SaveConfigArgs) => {
+      // save the user's configuration in DB (these promises run in parallel)
       await Promise.all([saveConfiguration(), _saveConfig(args)]);
     },
+    // fire this func if an error occurs during execution of mutation function
     onError: () => {
       toast({
         title: "Something went wrong",
@@ -68,6 +76,7 @@ export default function DesignConfigurator({
         variant: "destructive",
       });
     },
+    // fire this func if mutation function has successfully completed
     onSuccess: () => {
       // navigate user to the next step
       router.push(`/configure/preview?id=${configId}`);
@@ -520,7 +529,7 @@ export default function DesignConfigurator({
               {/* continue button to take user to the next step */}
               <Button
                 disabled={false}
-                //
+                // call the mutation function to save the cropped image and the chosen options for phonecase by the user in the remote DB, and redirect user to step 3
                 onClick={() =>
                   saveConfig({
                     configId,

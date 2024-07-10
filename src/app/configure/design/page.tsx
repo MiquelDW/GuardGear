@@ -6,8 +6,8 @@ import DesignConfigurator from "./DesignConfigurator";
 interface DesignProps {
   // 'searchParams' prop contains dynamic query parameters from the current URL
   searchParams: {
-    // use index signature to tell TS that the 'searchParams' object can have any number of properties, each with a key of type string
-    // index signatures define the shape of an object
+    // use index signature to tell TS that the 'searchParams' object can have any number of properties, each with a key of union type string | string[] | undefined
+    // index signatures allow you to define the types of properties for objects when you don't know the exact property names
     [key: string]: string | string[] | undefined;
   };
 }
@@ -23,7 +23,7 @@ export default async function Design({ searchParams }: DesignProps) {
 
   // use the DB client to read a single record from the table 'configuration'
   // find the 'configuration' object / record from the DB whose 'id' matches the given dynamic query param 'id'
-  // the retrieved 'configuration' object / record holds data about the uploaded image by the user
+  // the retrieved 'configuration' object holds data about the uploaded image by the user (after step 1)
   const configuration = await db.configuration.findUnique({
     where: { id },
   });

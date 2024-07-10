@@ -59,9 +59,9 @@ export default function Upload() {
   const { isUploading, startUpload } = useUploadThing("imageUploader", {
     // function that activates when the dropped image by the user has uploaded
     onClientUploadComplete: ([data]) => {
-      // retrieve 'configId' from destructured 'data' that you get back from the server / 'uploadthing' after the image has been uploaded and added to DB
+      // retrieve 'configId' from destructured 'data' that you get back from the route "imageUploader" after the image has been uploaded and added to DB
       const configId = data.serverData.configId;
-      // navigate user to the next step and show loading state while the user is being redirected
+      // navigate user to the next step and show loading state while the route's content is rendering
       startTransition(() => {
         router.push(`/configure/design?id=${configId}`);
       });
@@ -122,6 +122,7 @@ export default function Upload() {
                 <MousePointerSquareDashed className="mb-2 h-6 w-6 text-zinc-500" />
               ) : isUploading || isPending ? (
                 // user has dropped the img and it's currently being uploaded
+                // user is being redirected to a different route, show loading state while the route's content is rendering
                 <Loader2 className="mb-2 h-6 w-6 animate-spin text-zinc-500" />
               ) : (
                 // if nothing is happening (no dragging, no uploading, no loading), display default image icon
