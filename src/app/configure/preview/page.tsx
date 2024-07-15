@@ -6,8 +6,7 @@ import DesignPreview from "./DesignPreview";
 interface PreviewProps {
   // 'searchParams' prop contains dynamic query parameters from the current URL
   searchParams: {
-    // use index signature to tell TS that the 'searchParams' object can have any number of properties, each with a key of union type string | string[] | undefined
-    // index signatures allow you to define the types of properties for objects when you don't know the exact property names
+    // design > page.tsx: has explanation about index signatures
     [key: string]: string | string[] | undefined;
   };
 }

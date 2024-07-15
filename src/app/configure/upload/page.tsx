@@ -73,7 +73,7 @@ export default function Upload() {
     },
   });
 
-  // variable 'isPending' keeps track of whether a transition has finished or not
+  // variable 'isPending' keeps track of whether a transition is currently running
   // when navigating the user, you can show loading states while a page's content is rendering with the 'startTransition' function
   const [isPending, startTransition] = useTransition();
 

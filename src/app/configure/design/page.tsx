@@ -1,3 +1,4 @@
+// use the DB client to access and manipulate the database
 import { db } from "@/db";
 import { notFound } from "next/navigation";
 import DesignConfigurator from "./DesignConfigurator";
@@ -21,7 +22,6 @@ export default async function Design({ searchParams }: DesignProps) {
     return notFound();
   }
 
-  // use the DB client to read a single record from the table 'configuration'
   // find the 'configuration' object / record from the DB whose 'id' matches the given dynamic query param 'id'
   // the retrieved 'configuration' object holds data about the uploaded image by the user (after step 1)
   const configuration = await db.configuration.findUnique({

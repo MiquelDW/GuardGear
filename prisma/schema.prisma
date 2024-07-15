@@ -50,7 +50,8 @@ enum CaseColor {
 
 // data models (tables)
 model Configuration {
-  // each object gets an id from the 'cuid' function
+  // each new object gets an id from the 'cuid' function
+  // the @id attribute designates the field as the primary key of the table
   id              String        @id @default(cuid())
   width           Int
   height          Int
@@ -62,4 +63,78 @@ model Configuration {
   material        CaseMaterial?
   finish          CaseFinish?
   color           CaseColor?
+  // store order entries (indicates that a single Configuration can be linked to multiple order entries)
+  Order           Order[]
+}
+
+model User {
+  // primary key (each record has a unique id)
+  id    String  @id @default(cuid())
+  email String
+  // store order entries (indicates that a single User can be linked to multiple order entries)
+  Order Order[]
+
+  createdAt DateTime @default(now())
+  // automatically stores when this entry / record was last updated
+  updatedAt DateTime @updatedAt
+}
+
+model ShippingAddress {
+  // primary key (each record has a unique id)
+  id          String  @id @default(cuid())
+  name        String
+  street      String
+  city        String
+  postalCode  String
+  country     String
+  state       String?
+  phoneNumber String?
+  // store order entries (indicates that a single ShippingAddress can be linked to multiple order entries)
+  orders      Order[]
+}
+
+model BillingAddress {
+  // primary key (each record has a unique id)
+  id          String  @id @default(cuid())
+  name        String
+  street      String
+  city        String
+  postalCode  String
+  country     String
+  state       String?
+  phoneNumber String?
+  // store order entries (indicates that a single ShippingAddress can be linked to multiple order entries)
+  orders      Order[]
+}
+
+model Order {
+  // primary key (each record has a unique id)
+  id        String      @id @default(cuid())
+  amount    Float
+  isPaid    Boolean     @default(false)
+  status    OrderStatus @default(awaiting_shipment)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  // foreign key stores the ID of the related 'Configuration' record and establishes the relationship between the two models 'Order' & 'Configuration'
+  // this indicates that each Order is linked to one specific Configuration
+  configurationId String
+  // foreign key 'configurationId' refers to the primary key 'id' from the table 'Configuration', which defines a relationship between the tables 'Order' & 'Configuration'
+  // one-to-many relationship: One Configuration can be associated with many Orders ('Order[]'), but each Order is associated with one Configuration (FK)
+  configuration   Configuration @relation(fields: [configurationId], references: [id])
+
+  // foreign key stores the ID of the related 'User' record
+  userId String
+  // one-to-many relationship: One User can be associated with many Orders ('Order[]'), but each Order is associated with one User (FK 'userId')
+  User   User   @relation(fields: [userId], references: [id])
+
+  // foreign key stores the ID of the related 'ShippingAddress' record
+  shippingAddressId String?
+  // one-to-many relationship: One ShippingAddress can be associated with many Orders ('Order[]'), but each Order is associated with one ShippingAddress (FK)
+  shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id])
+
+  // foreign key stores the ID of the related 'BillingAddress' record
+  billingAddressId String?
+  // one-to-many relationship: One BillingAddress can be associated with many Orders ('Order[]'), but each Order is associated with one BillingAddress (FK)
+  billingAddress   BillingAddress? @relation(fields: [billingAddressId], references: [id])
 }

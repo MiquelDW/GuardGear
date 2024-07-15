@@ -5,7 +5,7 @@ import HandleComponent from "@/components/HandleComponent";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn, formatPrice } from "@/lib/utils";
-// NextImage component in Next.js optimizes images for performance. It automatically resizes, compresses, and serves images in the most appropriate format for the user's device (it also avoids a naming conflict in this module)
+// Next 'Image' component optimizes images for performance. It automatically resizes, compresses, and serves images in the most appropriate format for the user's device (it also avoids a naming conflict in this module)
 import NextImage from "next/image";
 // 'Rnd' is a draggable and resizable React Component from the 'react-rnd' lib
 import { Rnd } from "react-rnd";
@@ -34,6 +34,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { BASE_PRICE } from "@/config/products";
 import { useUploadThing } from "@/lib/uploadthing";
+// the useToast hook returns a toast function that you can use to display the 'Toaster' component
 import { useToast } from "@/components/ui/use-toast";
 // useMutation hook is typically used to create/update/delete data or perform server side-effects
 // with this hook, you're able to perform server-side operations and seperate it from the client, while also being able to perform client side actions based on the result of those operations (such as redirecting the user if mutation function has successfully completed), among other main benefits of this hook
@@ -56,14 +57,13 @@ export default function DesignConfigurator({
   imageDimensions,
 }: DesignConfiguratorProps) {
   const router = useRouter();
-  // the useToast hook returns a toast function that you can use to display the 'Toaster' component
   const { toast } = useToast();
 
-  // destructure defined mutation function (renamed to 'saveConfig')
-  const { mutate: saveConfig } = useMutation({
-    // useful for caching and invalidation
+  // destructure defined mutation function (renamed to 'saveConfig') and the provided 'isPending'
+  const { mutate: saveConfig, isPending } = useMutation({
+    // mutationKey is useful for caching and invalidation
     mutationKey: ["save-config"],
-    // define mutation function
+    // define mutation async function
     mutationFn: async (args: SaveConfigArgs) => {
       // save the user's configuration in DB (these promises run in parallel)
       await Promise.all([saveConfiguration(), _saveConfig(args)]);
@@ -183,7 +183,7 @@ export default function DesignConfigurator({
       // convert blob object into an file element that you can upload
       const file = new File([blob], "filename.png", { type: "image/png" });
 
-      // upload canvas (phone case with cropped image) file via the specified route, and also pass in the given 'configId'
+      // upload canvas with cropped image .png file via the specified route, and also pass in the given 'configId'
       // update the record in the DB where its 'id' matches the given 'configId'
       await startUpload([file], { configId });
     } catch (err) {
@@ -376,7 +376,10 @@ export default function DesignConfigurator({
                   {/* display dropdown menu ot the user */}
                   <DropdownMenu>
                     {/* button that triggers the dropdown menu */}
-                    <DropdownMenuTrigger asChild>
+                    <DropdownMenuTrigger
+                      // the 'DropdownMenuTrigger' component renders as the 'Button' component because of the asChild prop. This allows the 'Button' to inherit all the styles and behaviors of the 'DropdownMenuTrigger' while functioning as the 'Button' component.
+                      asChild
+                    >
                       <Button
                         variant="outline"
                         role="combobox"
@@ -528,7 +531,8 @@ export default function DesignConfigurator({
 
               {/* continue button to take user to the next step */}
               <Button
-                disabled={false}
+                size="sm"
+                className="w-full"
                 // call the mutation function to save the cropped image and the chosen options for phonecase by the user in the remote DB, and redirect user to step 3
                 onClick={() =>
                   saveConfig({
@@ -539,8 +543,10 @@ export default function DesignConfigurator({
                     finish: options.finish.value,
                   })
                 }
-                size="sm"
-                className="w-full"
+                // 'isPending' keeps track of whether the mutation function is currently running
+                disabled={isPending}
+                isLoading={isPending}
+                loadingText="Saving"
               >
                 Continue
                 <ArrowRight className="ml-1.5 inline h-4 w-4" />

@@ -5,12 +5,13 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 // button variants from the component library
 import { buttonVariants } from "./ui/button";
 import { ArrowRight } from "lucide-react";
+// in Server Components you can get the Kinde Auth data by using the getKindeServerSession helper
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function Navbar() {
+  // the getUser() function reads the cookies attached to that API request and returns the currently logged-in user
   const { getUser } = getKindeServerSession();
-  // variable that determines if current user is logged in
-  // get the user from the current user session
+  // the 'user' object contains the currently logged-in user from the current session
   const user = await getUser();
 
   // variable that determines if current logged in user is an admin
