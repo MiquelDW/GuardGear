@@ -3,5 +3,8 @@
   "extends": "next/core-web-vitals",
   // ESLint rules are predefined guidelines that ESLint uses to analyze and enforce code quality and style. They define what is considered an error or a warning in your code
   // Turn off "react/no-unescaped-entities" rule, this rule in ESLint ensures that certain characters (like <, >, {, }, ", and ') are properly escaped in JSX, but you don't need it in your codebase
-  "rules": { "react/no-unescaped-entities": "off" }
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-img-element": "off"
+  }
 }
