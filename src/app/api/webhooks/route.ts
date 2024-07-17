@@ -101,9 +101,9 @@ export async function POST(req: Request) {
       await resend.emails.send({
         // center of the email, verify your email in <> to send emails from a custom email
         from: "GuardGear <onboarding@resend.dev>",
-        // send email to the user's email
-        to: ["delivered@resend.dev"],
+        // send email to the user's email (filled in at Stripe checkout session)
         // to: [event.data.object.customer_details.email],
+        to: ["delivered@resend.dev"],
         subject: "Thanks for your order!",
         react: OrderReceivedEmail({
           orderId,

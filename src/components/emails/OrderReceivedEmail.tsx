@@ -87,9 +87,13 @@ export default function OrderReceivedEmail({
                 <Text style={track.number}>{orderId}</Text>
               </Column>
 
-              <Column style={{ marginLeft: 20 }}>
-                <Text style={global.paragraphWithBold}>Order Date</Text>
-                <Text style={track.number}>{orderDate}</Text>
+              <Column>
+                <Text style={{ ...global.paragraphWithBold, marginLeft: 20 }}>
+                  Order Date
+                </Text>
+                <Text style={{ ...global.paragraphWithBold, marginLeft: 20 }}>
+                  {orderDate}
+                </Text>
               </Column>
             </Row>
           </Section>
