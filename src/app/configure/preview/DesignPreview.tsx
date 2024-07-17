@@ -32,6 +32,7 @@ export default function DesignPreview({
   const { id } = configuration;
   // retrieve the currently logged-in user
   const { user } = useKindeBrowserClient();
+  console.log(user);
 
   // state var that determines if the Login Modal component should be displayed
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
