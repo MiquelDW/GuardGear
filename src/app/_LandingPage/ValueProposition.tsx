@@ -17,12 +17,12 @@ export default function ValueProposition() {
             <span className="relative px-2">
               customers
               {/* create SVG icon ('underline' prop returns JSX element) */}
-              <Icons.underline className="pointer-events-none absolute inset-x-0 -bottom-6 hidden text-green-500 sm:block" />
+              <Icons.underline className="pointer-events-none absolute inset-x-0 -bottom-6 hidden text-blue-600 sm:block" />
             </span>{" "}
             say
           </h2>
           <img
-            src="/snake-2.png"
+            src="/blue-shield-1.png"
             className="order-0 w-24 select-none lg:order-2"
           />
         </div>
@@ -33,11 +33,11 @@ export default function ValueProposition() {
           <div className="flex flex-auto flex-col gap-4 lg:pr-8 xl:pr-20">
             {/* Stars / Rating */}
             <div className="mb-2 flex gap-0.5">
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
             </div>
 
             {/* Review Text */}
@@ -63,7 +63,7 @@ export default function ValueProposition() {
               <div className="flex flex-col">
                 <p className="font-semibold">Jonathan</p>
                 <div className="flex items-center gap-1.5 text-zinc-600">
-                  <Check className="h-4 w-4 stroke-[3px] text-green-600" />
+                  <Check className="h-4 w-4 stroke-[3px] text-blue-600" />
                   <p className="text-sm">Verified Purchase</p>
                 </div>
               </div>
@@ -74,11 +74,11 @@ export default function ValueProposition() {
           <div className="flex flex-auto flex-col gap-4 lg:pr-8 xl:pr-20">
             {/* Stars / Rating */}
             <div className="mb-2 flex gap-0.5">
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
-              <Star className="h-5 w-5 fill-green-600 text-green-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
+              <Star className="h-5 w-5 fill-blue-600 text-blue-600" />
             </div>
 
             {/* Review Text */}
@@ -105,7 +105,7 @@ export default function ValueProposition() {
               <div className="flex flex-col">
                 <p className="font-semibold">Miquel</p>
                 <div className="flex items-center gap-1.5 text-zinc-600">
-                  <Check className="h-4 w-4 stroke-[3px] text-green-600" />
+                  <Check className="h-4 w-4 stroke-[3px] text-blue-600" />
                   <p className="text-sm">Verified Purchase</p>
                 </div>
               </div>

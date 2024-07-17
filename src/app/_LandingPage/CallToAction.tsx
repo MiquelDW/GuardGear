@@ -18,7 +18,7 @@ export default function CallToAction() {
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="mt-2 text-balance text-center text-5xl font-bold !leading-tight tracking-tight text-gray-900 md:text-6xl">
               Upload your photo and get{" "}
-              <span className="relative bg-green-600 px-2 text-white">
+              <span className="relative bg-blue-600 px-2 text-white">
                 your own case
               </span>{" "}
               now
@@ -50,19 +50,19 @@ export default function CallToAction() {
         {/* Highlights + Button to create phone case */}
         <ul className="mx-auto mt-12 w-fit max-w-prose space-y-2 sm:text-lg">
           <li className="w-fit">
-            <Check className="mr-1.5 inline h-5 w-5 text-green-600" />
+            <Check className="mr-1.5 inline h-5 w-5 text-blue-600" />
             High-quality silicone material
           </li>
           <li className="w-fit">
-            <Check className="mr-1.5 inline h-5 w-5 text-green-600" />
+            <Check className="mr-1.5 inline h-5 w-5 text-blue-600" />
             Scratch- and fingerprint resistant coating
           </li>
           <li className="w-fit">
-            <Check className="mr-1.5 inline h-5 w-5 text-green-600" />
+            <Check className="mr-1.5 inline h-5 w-5 text-blue-600" />
             Wireless charging compatible
           </li>
           <li className="w-fit">
-            <Check className="mr-1.5 inline h-5 w-5 text-green-600" />5 year
+            <Check className="mr-1.5 inline h-5 w-5 text-blue-600" />5 year
             print warranty
           </li>
 

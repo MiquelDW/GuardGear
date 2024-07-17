@@ -47,7 +47,7 @@ export default function Steps() {
         );
 
         // retrieve corresponding snake img for each step
-        const imgPath = `/snake-${i + 1}.png`;
+        const imgPath = `/blue-shield-${i + 1}.png`;
 
         return (
           <li key={step.name} className="relative overflow-hidden lg:flex-1">

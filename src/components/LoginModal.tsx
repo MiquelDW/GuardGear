@@ -30,7 +30,7 @@ export default function LoginModal({
           <div className="relative mx-auto mb-2 h-24 w-24">
             <Image
               fill
-              src="/snake-1.png"
+              src="/blue-shield-1.png"
               alt="snake image"
               className="object-contain"
             />

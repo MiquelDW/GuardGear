@@ -14,17 +14,17 @@ export default function HeroSection() {
         <div className="col-span-2 px-6 lg:px-0 lg:pt-4">
           {/* Flex container First Section */}
           <div className="relative mx-auto flex flex-col items-center text-center lg:items-start lg:text-left">
-            {/* Snake Picture */}
+            {/* Shield Picture */}
             <div className="absolute -top-20 left-0 hidden w-28 lg:block">
               {/* gradient goes from bottom to top, start color begins with slate-50 and transitions to slate-50 at 50% opacity in the middle of the gradient */}
               <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-slate-50 via-slate-50/50" />
-              <img src="/snake-1.png" className="w-full select-none" />
+              <img src="/blue-shield-1.png" className="w-full select-none" />
             </div>
 
             {/* Title */}
             <h1 className="relative mt-16 w-fit text-balance text-5xl font-bold !leading-tight tracking-tight text-gray-900 md:text-6xl lg:text-7xl">
               Your Image on a{" "}
-              <span className="bg-green-600 px-2 text-white">Custom</span> Phone
+              <span className="bg-blue-600 px-2 text-white">Custom</span> Phone
               Case
             </h1>
 
@@ -41,15 +41,15 @@ export default function HeroSection() {
             <ul className="mt-8 flex flex-col items-center space-y-2 text-left font-medium sm:items-start">
               <div className="space-y-2">
                 <li className="flex items-center gap-1.5 text-left">
-                  <Check className="h-5 w-5 shrink-0 text-green-600" />
+                  <Check className="h-5 w-5 shrink-0 text-blue-600" />
                   High-quality, durable material
                 </li>
                 <li className="flex items-center gap-1.5 text-left">
-                  <Check className="h-5 w-5 shrink-0 text-green-600" />5 year
+                  <Check className="h-5 w-5 shrink-0 text-blue-600" />5 year
                   print guarantee
                 </li>
                 <li className="flex items-center gap-1.5 text-left">
-                  <Check className="h-5 w-5 shrink-0 text-green-600" />
+                  <Check className="h-5 w-5 shrink-0 text-blue-600" />
                   Modern iPhone models supported
                 </li>
               </div>
@@ -91,11 +91,11 @@ export default function HeroSection() {
               {/* stars + some text */}
               <div className="flex flex-col items-center justify-between sm:items-start">
                 <div className="flex gap-0.5">
-                  <Star className="h-4 w-4 fill-green-600 text-green-600" />
-                  <Star className="h-4 w-4 fill-green-600 text-green-600" />
-                  <Star className="h-4 w-4 fill-green-600 text-green-600" />
-                  <Star className="h-4 w-4 fill-green-600 text-green-600" />
-                  <Star className="h-4 w-4 fill-green-600 text-green-600" />
+                  <Star className="h-4 w-4 fill-blue-600 text-blue-600" />
+                  <Star className="h-4 w-4 fill-blue-600 text-blue-600" />
+                  <Star className="h-4 w-4 fill-blue-600 text-blue-600" />
+                  <Star className="h-4 w-4 fill-blue-600 text-blue-600" />
+                  <Star className="h-4 w-4 fill-blue-600 text-blue-600" />
                 </div>
 
                 <p>
