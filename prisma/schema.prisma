@@ -112,6 +112,7 @@ model Order {
   id        String      @id @default(cuid())
   amount    Float
   isPaid    Boolean     @default(false)
+  // the default value for order 'status' is "awaiting_shipment"
   status    OrderStatus @default(awaiting_shipment)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt

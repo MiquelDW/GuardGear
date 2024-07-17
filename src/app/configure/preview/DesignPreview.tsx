@@ -64,7 +64,7 @@ export default function DesignPreview({
   if (finish === "textured") totalPrice += PRODUCT_PRICES.finish.textured;
 
   // destructure defined mutation function (renamed to 'createPaymentSession')
-  const { mutate: createPaymentSession } = useMutation({
+  const { mutate: createPaymentSession, isPending } = useMutation({
     // mutationKey is useful for caching and invalidation
     mutationKey: ["get-checkout-session"],
     // define mutation async function that creates a payment session
@@ -207,6 +207,10 @@ export default function DesignPreview({
 
             <div className="mt-8 flex justify-end pb-12">
               <Button
+                // 'isPending' keeps track of whether the mutation function is currently running
+                disabled={isPending}
+                isLoading={isPending}
+                loadingText="Redirecting"
                 onClick={() => handleCheckout()}
                 className="px-4 sm:px-6 lg:px-8"
               >

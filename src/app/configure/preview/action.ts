@@ -43,6 +43,7 @@ export async function createCheckoutSession({
 
   // check in the DB if user already ordered a specific configuration
   const existingOrder = await db.order.findFirst({
+    // grab order entry from DB whose 'userId' & 'configurationId' matches the given 'orderId' and 'user.id'
     where: {
       userId: user.id,
       configurationId: configuration.id,

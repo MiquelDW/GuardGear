@@ -1,4 +1,4 @@
-// later on this file, you will write a runtime validator to make sure you always get the data you expect, this enhances security
+// at runtime, the validators make sure you always get the data you expect, this enhances security
 
 import { PRODUCT_PRICES } from "@/config/products";
 

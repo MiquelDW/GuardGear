@@ -1,18 +1,25 @@
 // Route Handlers allows you to create highly customized and dynamic API endpoints within your Next.js application that handles client requests
 
+import OrderReceivedEmail from "@/components/emails/OrderReceivedEmail";
 import { db } from "@/db";
 import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 import Stripe from "stripe";
 
-// HTTP POST request handler of the webhook endpoint
+// create new instance of the Resend client using the Resend API key
+// this instance can be used to interact with the Resend API to send emails to users
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// POST request handler for this webhook API endpoint - POST is the standard HTTP method for sending data to a server (webhook API endpoint), which aligns with the purpose of webhooks--transmitting event information from Stripe to your application
 // every route handler function receives two arguments when a client sends an HTTP request to an API endpoint: the 'request' object and the 'context' object
 export async function POST(req: Request) {
   try {
     // read the incoming request body as a string
     const body = await req.text();
     // fetch the value of the "stripe-signature" header from the request
+    // this signature is generated using a combination of the payload (the request body) and your webhook secret
     const signature = headers().get("stripe-signature");
 
     // return error HTTP Response if value of signature header is empty
@@ -64,7 +71,7 @@ export async function POST(req: Request) {
         },
         data: {
           // you've checked that the request to the webhook endpoint is from Stripe
-          // this means that Stripe has processed the payment and you've received the money
+          // this means that Stripe has processed the payment and you've received the money (the user has paid via Stripe)
           isPaid: true,
           // create new shipping- and billing address entries that should be linked to the updated order entry (with FK's)
           shippingAddress: {
@@ -88,6 +95,29 @@ export async function POST(req: Request) {
             },
           },
         },
+      });
+
+      // send an order-received email to the user after the payment processing is done
+      await resend.emails.send({
+        // center of the email, verify your email in <> to send emails from a custom email
+        from: "GuardGear <miquel.dewit@hotmail.com>",
+        // send email to the user's email
+        to: [event.data.object.customer_details.email],
+        subject: "Thanks for your order!",
+        react: OrderReceivedEmail({
+          orderId,
+          orderDate: updatedOrder.createdAt.toLocaleDateString(),
+          // @ts-ignore
+          shippingAddress: {
+            // passing obj 'shippingAddress' with the following props is fine
+            name: session.customer_details!.name!,
+            city: shippingAddress!.city!,
+            country: shippingAddress!.country!,
+            postalCode: shippingAddress!.postal_code!,
+            street: shippingAddress!.line1!,
+            state: shippingAddress!.state,
+          },
+        }),
       });
 
       // return HTTP response object that contains the completed Checkout Session

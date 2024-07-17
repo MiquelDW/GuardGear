@@ -33,7 +33,7 @@ export default function HeroSection() {
               {/* max-w-prose sets the maximum width of an element to 65 characters (or 65ch), which is considered ideal for readability in typography. It's a comfortable measure for reading */}
               Capture your favorite memories with your own,{" "}
               <span className="font-semibold">one-of-one</span> phone case.
-              CaseCobra allows you to protect your memories, not just your phone
+              GuardGear allows you to protect your memories, not just your phone
               case.
             </p>
 

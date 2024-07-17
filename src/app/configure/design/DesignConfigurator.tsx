@@ -25,9 +25,10 @@ import {
   MODELS,
 } from "@/validators/option.validator";
 import { Label } from "@/components/ui/label";
-import { DropdownMenu, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import {
+  DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -373,11 +374,11 @@ export default function DesignConfigurator({
                 {/* model options */}
                 <div className="relative flex w-full flex-col gap-3">
                   <Label>Model</Label>
-                  {/* display dropdown menu ot the user */}
+                  {/* display dropdown menu to the user */}
                   <DropdownMenu>
                     {/* button that triggers the dropdown menu */}
                     <DropdownMenuTrigger
-                      // the 'DropdownMenuTrigger' component renders as the 'Button' component because of the asChild prop. This allows the 'Button' to inherit all the styles and behaviors of the 'DropdownMenuTrigger' while functioning as the 'Button' component.
+                      // change the default rendered element to the one passed as a child, merging their props and behavior+
                       asChild
                     >
                       <Button

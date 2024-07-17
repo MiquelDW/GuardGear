@@ -27,7 +27,7 @@ export default async function Navbar() {
       <MaxWidthWrapper>
         <div className="border-zinc-20 flex h-14 items-center justify-between border-zinc-200">
           <Link href="/" className="z-40 flex font-semibold">
-            case <span className="text-green-600">cobra</span>
+            guard <span className="text-green-600">gear</span>
           </Link>
           <div className="flex h-full items-center space-x-4">
             {/* show links based on login status of the current user */}
