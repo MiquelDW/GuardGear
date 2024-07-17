@@ -100,9 +100,10 @@ export async function POST(req: Request) {
       // send an order-received email to the user after the payment processing is done
       await resend.emails.send({
         // center of the email, verify your email in <> to send emails from a custom email
-        from: "GuardGear <miquel.dewit@hotmail.com>",
+        from: "GuardGear <onboarding@resend.dev>",
         // send email to the user's email
-        to: [event.data.object.customer_details.email],
+        to: ["delivered@resend.dev"],
+        // to: [event.data.object.customer_details.email],
         subject: "Thanks for your order!",
         react: OrderReceivedEmail({
           orderId,
