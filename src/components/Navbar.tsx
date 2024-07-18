@@ -16,8 +16,7 @@ export default async function Navbar() {
 
   // variable that determines if current logged in user is an admin
   // check if current user's email (if 'user' is not null / logged in) is equal to the admin's email address saved inside the '.env' file
-  const isAdmin =
-    user?.email === process.env.ADMIN_EMAIL || "jessematyas@live.nl";
+  const isAdmin = user?.email === process.env.ADMIN_EMAIL;
 
   return (
     // Navigation Section
